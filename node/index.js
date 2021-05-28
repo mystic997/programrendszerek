@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const expressSession = require('express-session');
@@ -12,13 +11,15 @@ const expressSession = require('express-session');
 const app = express();
 
 const port = process.env.PORT || 3000;
-const dbUrl = 'mongodb+srv://<usernév:jelszó>@prf-cluster.5a5tr.mongodb.net/test';
+const dbUrl = 'mongodb+srv://prf-user:123123123@cluster0.cjyo7.mongodb.net/prf-db?retryWrites=true&w=majority';
 
-mongoose.connect(dbUrl);
+mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true})
+.then((message) => consol.log("connected to db"))
+.catch((error) => console.log("failed to connet db", error));
 
-const whitelist = ['https://<project_id>.web.app', 
-'https://<project_id>.firebaseapp.com', 
-'http://localhost:4200','http://localhost:3000'];
+const whitelist = ['https://prf-homework.web.app', 
+'https://prf-homework.firebaseapp.com', 
+'http://localhost:4200','http://localhost:3000', 'chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop'];
 
 var corsOptions = {
     origin: function (origin, callback) {
@@ -108,4 +109,3 @@ app.listen(port, () => {
     console.log('The server is running!');
 })
 
-// a parancssorbol futo szervert Ctrl-C billentyukomboval allitom meg

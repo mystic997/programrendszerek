@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
-const mongoose = require('mongoose');
-const exampleModel = mongoose.model('example');
-const userModel = mongoose.model('user');
+const Order = require("./models/order");
+const User = require("./models/user");
+const Product = require("./models/product");
 
 router.route('/login').post((req, res, next) => {
     if(req.body.username, req.body.password) {
@@ -39,84 +39,93 @@ router.route('/status').get((req, res, next) => {
 })
 
 router.route('/user').get((req, res, next) => {
-    userModel.find({}, (err, users) => {
-        if(err) return res.status(500).send('DB hiba');
+    User.find({}, (err, users) => {
+        if(err) return res.status(500).send('DB Connection error');
         res.status(200).send(users);
     })
 }).post((req, res, next) => {
-    if(req.body.username && req.body.email && req.body.password) {
-        userModel.findOne({username: req.body.username}, (err, user) => {
-            if(err) return res.status(500).send('DB hiba');
+    if(req.body.username && req.body.name && req.body.password) {
+        User.findOne({username: req.body.username}, (err, user) => {
+            if(err) return res.status(500).send('DB Connection error');
             if(user) {
-                return res.status(400).send('Hiba, mar letezik ilyen felhasznalonev');
+                return res.status(400).send('User already exist');
             }
             const usr = new userModel({username: req.body.username, password: req.body.password, 
-                email: req.body.email});
+                name: req.body.name});
             usr.save((error) => {
-                if(error) return res.status(500).send('A mentés során hiba történt');
-                return res.status(200).send('Sikeres mentes tortent');
+                if(error) return res.status(500).send('Error occurred during the saving');
+                return res.status(200).send('saved');
             })
         })
     } else {
-        return res.status(400).send('Hibas keres, username, email es password kell');
+        return res.status(400).send('Invalid request body');
     }
 })
 
-router.route('/example').get((req, res, next) => {
-    exampleModel.find({}, (err, examples) => {
-        if(err) return res.status(500).send('DB hiba');
-        res.status(200).send(examples);
+router.route("/product").get((req, res) => {
+    Product.find({}, (err, products) => {
+        if(err) return res.status(500).send('DB hiba2');
+        res.status(200).send(products);
     })
+   
 }).post((req, res, next) => {
-    if(req.body.id && req.body.value) {
-        exampleModel.findOne({id: req.body.id}, (err, example) => {
-            if(err) return res.status(500).send('DB hiba');
-            if(example) {
-                return res.status(400).send('már van ilyen id');
+    if(req.body.title && req.body.price && req.body.quantity) {
+        Product.findOne({title: req.body.title}, (err, product) => {
+            if(err) return res.status(500).send('DB Connection error');
+            if(product) {
+                return res.status(400).send('Product already exist');
             } else {
-                const example = new exampleModel({id: req.body.id, value: req.body.value});
-                example.save((error) => {
-                    if(error) return res.status(500).send('A mentés során hiba történt');
-                    return res.status(200).send('Sikeres mentes tortent');
-                })
+                const product = new Product({
+                    title: req.body.title,
+                    price: req.body.price,
+                    quantity: req.body.quantity
+                });
+                product.save()
+                    .then((result) => res.send(result))
+                    .catch((error) => {
+                        console.log("failed on product saving", error);
+                        res.status(500).send("error at pruduct saving");
+                    });
             }
         })
     } else {
-        return res.status(400).send('Nem volt id vagy value');
+        return res.status(400).send('Invalid request body');
     }
 }).put((req, res, next) => {
-    if(req.body.id && req.body.value) {
-        exampleModel.findOne({id: req.body.id}, (err, example) => {
-            if(err) return res.status(500).send('DB hiba');
-            if(example) {
-                example.value = req.body.value;
-                example.save((error) => {
-                    if(error) return res.status(500).send('A mentés során hiba történt');
-                    return res.status(200).send('Sikeres mentes tortent');
-                })
-            } else {
-                return res.status(400).send('Nincs ilyen id az adatbázisban');
-            }
+    if(req.body.title && req.body.price && req.body.quantity) {
+        Product.findOne({title: req.body.title}, (err, product) => {
+            if(err) return res.status(500).send('DB Connection error');
+            if(!product) {
+                return res.status(400).send('Product not exist');
+            } 
+            product.price = req.body.price;
+            product.quantity = req.body.quantity;
+            product.save()
+                .then((result) => res.send(result))
+                .catch((error) => {
+                    console.log("failed on product saving", error);
+                    res.status(500).send("error at pruduct saving");
+                });
         })
     } else {
-        return res.status(400).send('Nem volt id vagy value');
+        return res.status(400).send('Invalid request body');
     }
 }).delete((req, res, next) => {
-    if(req.body.id) {
-        exampleModel.findOne({id: req.body.id}, (err, example) => {
-            if(err) return res.status(500).send('DB hiba');
-            if(example) {
-                example.delete((error) => {
-                    if(error) return res.status(500).send('A mentés során hiba történt');
-                    return res.status(200).send('Sikeres torles tortent');
+    if(req.body.title) {
+        Product.findOne({id: req.body.title}, (err, product) => {
+            if(err) return res.status(500).send('DB Connection error');
+            if(product) {
+                product.delete((error) => {
+                    if(error) return res.status(500).send('Error occurred during the deletion');
+                    return res.status(200).send('deleted');
                 })
             } else {
-                return res.status(400).send('Nincs ilyen id az adatbázisban');
+                return res.status(400).send('Product not exist');
             }
         })
     } else {
-        return res.status(400).send('Nem volt id');
+        return res.status(400).send('Invalid request body');
     }
-})
+});
 
 module.exports = router;
