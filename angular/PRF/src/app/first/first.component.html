@@ -19,4 +19,23 @@
     <input type="text" [(ngModel)]="title"> <!-- Attribute Directive -->
     <button (click)="goToSecond()">Second</button>
     <a [routerLink]="['/login']">Logout</a>
+
+    <ul>
+      <li *ngFor="let el of cloudElements">
+        {{el}}
+      </li>
+    </ul>
+
+    <div>
+      <div>
+        <label>Id</label>
+        <input type="text" id="id" [(ngModel)]="cloudId">
+    </div>
+    <div>
+        <label>Value</label>
+        <input type="text" id="value" [(ngModel)]="value">
+    </div>
+    <button (click)="saveData()">SAVE</button>
+    </div>
+    <button (click)="refreshDb()">REFRESH</button>
   </div>

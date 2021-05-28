@@ -10,10 +10,6 @@ export class ConnectionService {
   constructor(private http: HttpClient) { }
 
   greet() {
-    return this.http.get(environment.serverUrl + '/status', {responseType: 'text', withCredentials: true}); //aszinkronitas
-  }
-
-  getTodos() {
-    return this.http.get(environment.springUrl + '/todos');
+    return this.http.get(environment.serverUrl, {responseType: 'text', withCredentials: true}); //aszinkronitas
   }
 }

@@ -18,10 +18,11 @@ mongoose.connect(dbUrl);
 
 const whitelist = ['https://<project_id>.web.app', 
 'https://<project_id>.firebaseapp.com', 
-'http://localhost:4200'];
+'http://localhost:4200','http://localhost:3000'];
 
 var corsOptions = {
     origin: function (origin, callback) {
+        console.log("origin", origin);
       if (whitelist.indexOf(origin) !== -1 || !origin) {
         callback(null, true)
       } else {
@@ -80,21 +81,21 @@ app.use(passport.session());
 
 // ez a default root akkor ha az Angular külön fut pl. Firebase-en
 
-app.get('/', (req, res, next) => {
-    res.send('Hello World!');
-})
+// app.get('/', (req, res, next) => {
+//     res.send('Hello World!22');
+// })
 
 // ez a rész akkor ha a node public mappájában van az Angular kliens
 
-/* app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')))
 .set('views', path.join(__dirname, 'views'))
 .set('view engine', 'ejs')
 .get('/', (req, res) => res.render('pages/index'));
 
 app.use('/', require('./routes'));
-app.use('/secondary', require('./routes')); */
+app.use('/secondary', require('./routes'));
 
-app.use('/', require('./routes'));
+// app.use('/', require('./routes'));
 
 // REST - Representative State Transfer, GET - Read, POST - Create, PUT - Update, DELETE - Delete
 
