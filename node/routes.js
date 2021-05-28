@@ -12,30 +12,26 @@ router.route('/login').post((req, res, next) => {
             if(error) return res.status(500).send(error);
             req.login(user, function(error) {
                 if(error) return res.status(500).send(error);
-                return res.status(200).send('Bejelentkezes sikeres');
+                return res.status(200).send('Logged in');
             })
         })(req, res);
     } else {
-        return res.status(400).send('Hibas keres, username es password kell');
+        return res.status(400).send('Invalid request body');
     }
 });
 
 router.route('/logout').post((req, res, next) => {
     if(req.isAuthenticated()) {
         req.logout();
-        return res.status(200).send('Kijelentkezes sikeres');
-    } else {
-        return res.status(403).send('Nem is volt bejelentkezve');
     }
+    return res.status(200).send('Logged out');
 })
 
 router.route('/status').get((req, res, next) => {
     if(req.isAuthenticated()) {
         return res.status(200).send(req.session.passport);
-    } else {
-        return res.status(403).send('Nem is volt bejelentkezve');
     }
-    
+    return res.status(403).send('Guest');    
 })
 
 router.route('/user').get((req, res, next) => {
