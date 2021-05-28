@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   custom: 'This is real',
-  serverUrl: 'https://prf-node-hellow123.herokuapp.com/',
+  serverUrl: 'https://polar-beach-66461.herokuapp.com/',
   firebase: {
     apiKey: "AIzaSyBBHxfLeKvlM6DwyMnNysn7g_0r7YwnZvo",
     authDomain: "prf-homework.firebaseapp.com",
