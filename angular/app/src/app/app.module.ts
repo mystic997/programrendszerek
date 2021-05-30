@@ -5,8 +5,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FirstComponent } from './first/first.component';
-import { SecondComponent } from './second/second.component';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
 import { ErrorComponent } from './error/error.component';
 import { LoginComponent } from './login/login.component';
 import { HttpReqInterceptor } from './utils/http.interceptor';
@@ -17,8 +17,8 @@ import { environment } from 'src/environments/environment';
 @NgModule({
   declarations: [
     AppComponent,
-    FirstComponent,
-    SecondComponent,
+    HomeComponent,
+    AboutComponent,
     ErrorComponent,
     LoginComponent
   ],

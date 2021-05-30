@@ -96,10 +96,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', require('./routes'));
 app.use('/secondary', require('./routes'));
 
-// app.use('/', require('./routes'));
-
-// REST - Representative State Transfer, GET - Read, POST - Create, PUT - Update, DELETE - Delete
-
 app.use((req, res, next) => {
     console.log('ez a hibakezelo');
     res.status(404).send('A kert eroforras nem talalhato');

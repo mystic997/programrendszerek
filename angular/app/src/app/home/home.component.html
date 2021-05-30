@@ -1,0 +1,21 @@
+<div class="content" role="main">
+      <span>{{ title }} page!</span>
+
+      <div class="container">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">Home page card</h5>
+            <h6 class="card-subtitle mb-2 text-muted">This is an example card</h6>
+            <p class="card-text">Made by Szedlacsek Balázs for PRF homework</p>
+            <a href="https://github.com/balazs1396" target="_blank" class="card-link">Szedlacsek Balázs</a>
+          </div>
+        </div>
+
+        <div class="container">
+          <button (click)="goToAboutPage()">About Page</button>
+          <a [routerLink]="['/login']">Logout</a>
+        </div>
+          
+      </div>
+</div>
+  
