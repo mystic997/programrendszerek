@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
 import { ConnectionService } from '../utils/connection.service';
 import { Subscription } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -12,11 +12,17 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private connectionService: ConnectionService, private router: Router, private afs: AngularFirestore) {
+  constructor(
+      private connectionService: ConnectionService, 
+      private router: Router, 
+      private afs: AngularFirestore, 
+      private http: HttpClient
+    ) {
     
   }
 
   title = 'Home';
+  products = [];
 
   dataObserver: Subscription | null = null;
 
@@ -25,6 +31,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.http.get<any>('https://polar-beach-66461.herokuapp.com/product').subscribe(data => {
+        this.products = data;
+        console.log(data);
+    }) 
     
   }
 

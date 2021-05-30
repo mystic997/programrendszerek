@@ -27,13 +27,6 @@ router.route('/logout').post((req, res, next) => {
     return res.status(200).send('Logged out');
 })
 
-router.route('/status').get((req, res, next) => {
-    if(req.isAuthenticated()) {
-        return res.status(200).send(req.session.passport);
-    }
-    return res.status(403).send('Guest');    
-})
-
 router.route('/user').get((req, res, next) => {
     User.find({}, (err, users) => {
         if(err) return res.status(500).send('DB Connection error');
@@ -46,12 +39,17 @@ router.route('/user').get((req, res, next) => {
             if(user) {
                 return res.status(400).send('User already exist');
             }
-            const usr = new userModel({username: req.body.username, password: req.body.password, 
-                name: req.body.name});
-            usr.save((error) => {
-                if(error) return res.status(500).send('Error occurred during the saving');
-                return res.status(200).send('saved');
-            })
+            const usr = new User({
+                name: req.body.name,
+                username: req.body.username,
+                password: req.body.password
+            });
+            usr.save()
+                .then((result) => res.send(result))
+                .catch((error) => {
+                    console.log("failed on user saving", error);
+                    res.status(500).send("error at pruduct saving");
+                });
         })
     } else {
         return res.status(400).send('Invalid request body');
