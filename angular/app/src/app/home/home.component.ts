@@ -22,7 +22,13 @@ export class HomeComponent implements OnInit {
   }
 
   title = 'Home';
-  products = [];
+  products = [
+    {
+      title: "",
+      price: "",
+      quantity: ""
+    }
+  ];
 
   dataObserver: Subscription | null = null;
 
