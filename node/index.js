@@ -18,8 +18,8 @@ mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true})
 .then((message) => console.log("connected to db"))
 .catch((error) => console.log("failed to connet db", error));
 
-const whitelist = ['https://prf-homework.web.app', 
-'https://prf-homework.firebaseapp.com', 
+const whitelist = ['https://homework-44ad9.web.app', 
+'https://homework-44ad9.firebaseapp.com', 
 'http://localhost:4200','http://localhost:3000', 'chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop'];
 
 var corsOptions = {
